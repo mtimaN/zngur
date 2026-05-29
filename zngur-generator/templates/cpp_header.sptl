@@ -239,11 +239,33 @@ namespace {{ self.namespace }} {
 
     {% if td.ty.path.to_string() == format!("::{}::Bool", self.namespace) %}
       public:
-        operator bool() {
+        operator bool() const noexcept {
           return __zngur_data[0];
         }
+        operator int() const = delete;
         Bool(bool b) {
           __zngur_data[0] = b;
+        }
+        friend ::std::ostream& operator<<(::std::ostream& os, const Bool& b) {
+          return os << static_cast<bool>(b);
+        }
+        friend bool operator==(const Bool& a, const Bool& b) {
+          return static_cast<bool>(a) == static_cast<bool>(b);
+        }
+        friend bool operator==(const Bool& a, bool b) {
+          return static_cast<bool>(a) == b;
+        }
+        friend bool operator==(bool a, const Bool& b) {
+          return a == static_cast<bool>(b);
+        }
+        friend bool operator!=(const Bool& a, const Bool& b) {
+          return static_cast<bool>(a) != static_cast<bool>(b);
+        }
+        friend bool operator!=(const Bool& a, bool b) {
+          return static_cast<bool>(a) != b;
+        }
+        friend bool operator!=(bool a, const Bool& b) {
+          return a != static_cast<bool>(b);
         }
     {% endif %}
 
